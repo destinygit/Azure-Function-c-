@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/az-sql-mdl-dev-01-san-02/databases/az-wideworldimporters-dataDB",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:WorldWideImpoters"
+    }
+  }
+}
