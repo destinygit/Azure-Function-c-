@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace SQLRestAPI
+namespace GETSQLRestAPI
 {
     public class TaskModel
     {
@@ -22,10 +22,10 @@ namespace SQLRestAPI
         public string Description { get; set; }
         public bool IsDone { get; set; }
     }
-    public static class SQLRestAPIGet
+    public static class Function1
     {
 
-        [FunctionName("SQLRestAPIGet")]
+        [FunctionName("Function1")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "datasets")] HttpRequest req,
             ILogger log)
@@ -56,7 +56,7 @@ namespace SQLRestAPI
 
                     //While the reader reads
                     while (reader.Read())
-                    {   
+                    {
                         //create a dataset object that will store the data returned
                         TaskModel task = new TaskModel()
                         {
@@ -87,16 +87,6 @@ namespace SQLRestAPI
 
 
 
-            //string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            //dynamic data = JsonConvert.DeserializeObject(requestBody);
-            //name = name ?? data?.name;
-
-            //string responseMessage = string.IsNullOrEmpty(secret.Value)
-                //? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                //: $"Hello, {secret.Value}. This HTTP triggered function executed successfully.";
-
-
-            //return new OkObjectResult(responseMessage);
         }
     }
 }
