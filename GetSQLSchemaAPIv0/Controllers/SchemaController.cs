@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GetSQLSchemaAPI.Models;
-using GetSQLSchemaAPI.Services;
-using GetSQLSchemaAPI.Helpers;
-using Microsoft.EntityFrameworkCore;
 
 namespace GetSQLSchemaAPI.Controllers
 {
@@ -12,12 +9,10 @@ namespace GetSQLSchemaAPI.Controllers
     public class SchemaController : ControllerBase
     {
 
-        private readonly azwideworldimportersdataDBContext _context;
-        private readonly IUriService uriService;
-        public SchemaController(azwideworldimportersdataDBContext context, IUriService uriService)
+        private azwideworldimportersdataDBContext _context;
+        public SchemaController(azwideworldimportersdataDBContext context)
         {
-            this._context = context;
-            this.uriService = uriService;
+            _context = context;
         }
 
         public IQueryable<Employee> FindAll()
@@ -30,17 +25,14 @@ namespace GetSQLSchemaAPI.Controllers
         //clinet is trying to request this API pattern
 
         [HttpGet("GetSchema")]
-        public async Task<IActionResult> GetAll([FromQuery] Pagination filter)
+        public IEnumerable<Employee> Get([FromQuery] Pagination filter)
         {
-            var route = Request.Path.Value;
-            var validFilter = new Pagination(filter.pageSize, filter.pageNumber);
-            var pagedData = await _context.Employees
-               .Skip((validFilter.pageNumber - 1) * validFilter.pageSize)
-               .Take(validFilter.pageSize)
-               .ToListAsync();
-            var totalRecords = await _context.Employees.CountAsync();
-            var pagedReponse = PaginationHelperscs.CreatePagedReponse<Employee>(pagedData, validFilter, totalRecords, uriService, route);
-            return Ok(pagedReponse);
+            var Pagination = new Pagination(filter.pageSize, filter.pageNumber);
+            return FindAll()
+                .Skip((Pagination.pageNumber - 1) * Pagination.pageSize)
+                .Take(Pagination.pageSize)
+                .ToArray();
+
         }
 
         //request/require object {parameter} take object put by user and save it to DB
